@@ -1,0 +1,116 @@
+﻿@model PaginatedList<ModTeamManager.Models.ChatMessage>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Chat Logs</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Service: <input type="text" name="serviceString" value="@ViewData["ServiceFilter"]" />
+            Channel: <input type="text" name="channelString" value="@ViewData["ChannelFilter"]" />
+            User: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            Msg: <input type="text" name="messageContentString" value="@ViewData["MessageContentFilter"]" />
+            
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th class="col-2">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Date</a>
+
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.Date)</a>*@
+
+            </th>
+            <th class="col-1">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ServiceSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Service</a>
+
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["ServiceSortParm"]">@Html.DisplayNameFor(model => model.Service)</a>*@
+            </th>
+            <th class="col-1">
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ChannelSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Channel</a>
+
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["ChannelSortParm"]">@Html.DisplayNameFor(model => model.Channel)</a>*@
+            </th>
+
+            <th class="col-1">
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["UserSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">User</a>
+
+                @*<a asp-action="Index" asp-route-sortOrder="@ViewData["UserSortParm"]">@Html.DisplayNameFor(model => model.User)</a>*@
+
+            </th>
+            <th class="col-5">
+                Msg
+                @*@Html.DisplayNameFor(model => model.Msg)*@
+            </th>
+            @*            <th class="col-1">
+                @Html.DisplayNameFor(model => model.Flag)
+                </th>
+            *@            @*<th>
+                @Html.DisplayNameFor(model => model.Url)
+                </th>*@
+            <th class="col-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            
+            <tr>
+                <td class="col-2">
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => item.Service)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => item.Channel)
+                </td>
+                <td class="col-1">
+                    @Html.DisplayFor(modelItem => item.User)
+                </td>
+                <td class="col-5">
+                    @Html.DisplayFor(modelItem => item.Msg)
+                </td>
+                @*            <td class="col-1">
+                    @Html.DisplayFor(modelItem => item.Flag)
+                    </td>
+                *@            @*<td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                    </td>*@
+                <td class="col-2">
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Ban" asp-route-id="@item.Id">Ban</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
